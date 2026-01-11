@@ -5,6 +5,13 @@ public partial class CharacterBody2d : CharacterBody2D
 {
 	public const float Speed = 300.0f;
 	public const float JumpVelocity = -400.0f;
+	
+	private AnimatedSprite2D _animatedSprite2D;
+
+	public override void _Ready()
+	{
+		_animatedSprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -32,6 +39,18 @@ public partial class CharacterBody2d : CharacterBody2D
 		else
 		{
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+		}
+		
+		if (direction > Vector2.Right)
+		{
+			_animatedSprite2D.Play("walk");
+		}
+		else if (direction < Vector2.Left)
+		{
+			_animatedSprite2D.Play("walk");
+		}
+		else {
+			_animatedSprite2D.Play("idle");
 		}
 
 		Velocity = velocity;
