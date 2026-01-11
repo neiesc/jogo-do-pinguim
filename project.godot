@@ -26,6 +26,11 @@ window/stretch/mode="viewport"
 
 project/assembly_name="Jogo Pinguim"
 
+[editor]
+
+movie_writer/movie_file="/home/neiesc/Desenvolvimento/jogo-pinguim/jogo-pinguim.avi"
+movie_writer/fps=30
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
