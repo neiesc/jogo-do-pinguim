@@ -27,7 +27,7 @@ jobs:
       - name: Install Godot Mono
         run: |
           echo "Baixando Godot ${{ env.GODOT_VERSION }} Mono..."
-          wget -q https://github.com/godotengine/godot/releases/downiload/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
+          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
           
           echo "Extraindo..."
           unzip -q Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
