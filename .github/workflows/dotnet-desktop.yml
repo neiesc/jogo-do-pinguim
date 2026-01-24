@@ -71,7 +71,7 @@ jobs:
 
       - name: Export to Web
         run: |
-          godot --headless --path "${{ env.PROJECT_PATH }}" --export-release "${{ env.EXPORT_NAME }}" "build/web/index.html"
+          godot --headless --path "${{ env.PROJECT_PATH }}" --export-release "Web" "build/web/index.html"
 
       - name: Export Windows
         run: |
