@@ -1,4 +1,4 @@
-name: Build Godot C# Project
+name: Build Godot C# Project for Web
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  GODOT_VERSION: '3'
+  GODOT_VERSION: '3.5.5'
   EXPORT_NAME: MeuJogo
   PROJECT_PATH: '.'
 
