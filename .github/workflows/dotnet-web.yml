@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  GODOT_VERSION: '3.6.2'
+  GODOT_VERSION: '3.6.2-stable'
   EXPORT_NAME: MeuJogo
   PROJECT_PATH: '.'
 
@@ -27,14 +27,14 @@ jobs:
       - name: Install Godot Mono
         run: |
           echo "Baixando Godot ${{ env.GODOT_VERSION }} Mono..."
-          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64.zip
+          wget -q https://github.com/godotengine/godot/releases/downiload/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
           
           echo "Extraindo..."
-          unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64.zip
+          unzip -q Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
           
           echo "Renomeando pasta extraída..."
           # Move a pasta extraída (qualquer que seja o nome dela) para 'godot_bin_dir'
-          mv Godot_v*mono_linux_x86_64 godot_bin_dir
+          mv Godot_v*mono_linux_headless_64 godot_bin_dir
           
           echo "Configurando permissões..."
           # Dá permissão de execução para o binário dentro da pasta (qualquer arquivo começando com Godot_v)
