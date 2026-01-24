@@ -6,28 +6,24 @@ on:
   pull_request:
 
 env:
-  # Versão e Nome
   GODOT_VERSION: '4.3'
   EXPORT_NAME: MeuJogo
-  # Caminho relativo do projeto (use '.' se estiver na raiz)
-  PROJECT_PATH: '.' 
+  PROJECT_PATH: '.'
 
 jobs:
   export_game:
     runs-on: ubuntu-latest
     name: Export Game
     steps:
-      # 1. Checkout do código
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configura .NET (Essencial para C#)
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x' # Godot 4.3 usa .NET 8 por padrão
+          dotnet-version: '8.0.x'
 
-      # 3. Baixa e Instala o Godot Manualmente (Sem usar Actions de terceiros)
+      # CORREÇÃO AQUI: Uso de wildcards para garantir que encontramos os arquivos
       - name: Install Godot Mono
         run: |
           echo "Baixando Godot ${{ env.GODOT_VERSION }} Mono..."
@@ -36,51 +32,51 @@ jobs:
           echo "Extraindo..."
           unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64.zip
           
-          echo "Configurando executável..."
-          # A versão Mono extrai numa subpasta. Vamos mover para ficar fácil.
-          mv Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64 godot_dir
-          chmod +x godot_dir/Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64
+          echo "Renomeando pasta extraída..."
+          # Move a pasta extraída (qualquer que seja o nome dela) para 'godot_bin_dir'
+          mv Godot_v*mono_linux_x86_64 godot_bin_dir
           
-          # Adiciona ao PATH para podermos chamar apenas 'godot'
-          echo "$GITHUB_WORKSPACE/godot_dir" >> $GITHUB_PATH
+          echo "Configurando permissões..."
+          # Dá permissão de execução para o binário dentro da pasta (qualquer arquivo começando com Godot_v)
+          chmod +x godot_bin_dir/Godot_v*
           
-          # Cria um alias/link simbólico para chamar o executável de 'godot'
-          ln -s $GITHUB_WORKSPACE/godot_dir/Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64 $GITHUB_WORKSPACE/godot_dir/godot
+          echo "Criando link simbólico..."
+          # Cria um link chamado 'godot' apontando para o binário real
+          # O comando find garante que pegamos apenas o arquivo, não a pasta GodotSharp
+          GODOT_BINARY=$(find godot_bin_dir -maxdepth 1 -type f -name "Godot_v*")
+          ln -s $GITHUB_WORKSPACE/$GODOT_BINARY $GITHUB_WORKSPACE/godot_bin_dir/godot
+          
+          echo "Adicionando ao PATH..."
+          echo "$GITHUB_WORKSPACE/godot_bin_dir" >> $GITHUB_PATH
 
-      # 4. Baixa e Instala os Export Templates
+      - name: Verify Godot Installation
+        run: |
+          godot --version
+
       - name: Install Export Templates
         run: |
-          echo "Baixando Templates..."
           wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
-          
-          echo "Instalando Templates..."
           mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono
           unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
           mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono/
           rm -f Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
 
-      # 5. Restaura dependências do NuGet
       - name: Dotnet Restore
         run: dotnet restore ${{ env.PROJECT_PATH }}
 
-      # 6. Cria pastas de saída
       - name: Create Build Directories
         run: |
           mkdir -p build/windows
           mkdir -p build/linux
 
-      # 7. Exporta para Windows
-      # IMPORTANTE: Verifique se o nome "Windows Desktop" bate com seu preset no export_presets.cfg
       - name: Export Windows
         run: |
           godot --headless --verbose --path ${{ env.PROJECT_PATH }} --export-release "Windows Desktop" ./build/windows/${{ env.EXPORT_NAME }}.exe
 
-      # 8. Exporta para Linux
       - name: Export Linux
         run: |
           godot --headless --verbose --path ${{ env.PROJECT_PATH }} --export-release "Linux/X11" ./build/linux/${{ env.EXPORT_NAME }}.x86_64
 
-      # 9. Upload dos artefatos
       - name: Upload Windows Build
         uses: actions/upload-artifact@v4
         with:

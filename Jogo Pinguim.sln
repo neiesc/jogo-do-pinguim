@@ -2,6 +2,13 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jogo Pinguim", "Jogo Pinguim.csproj", "{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{8E8DC7FB-9A06-4886-88A5-EE0EC7C15E9E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
+		.gitignore = .gitignore
+		.gitattributes = .gitattributes
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
