@@ -6,7 +6,7 @@ on:
   pull_request:
 
 env:
-  GODOT_VERSION: ' 3.6.2-stable'
+  GODOT_VERSION: '3.6.2-stable'
   EXPORT_NAME: MeuJogo
   PROJECT_PATH: '.'
 
