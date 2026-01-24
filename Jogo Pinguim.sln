@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{8E8DC7
 		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		.gitignore = .gitignore
 		.gitattributes = .gitattributes
+		.github\workflows\static.yml = .github\workflows\static.yml
 	EndProjectSection
 EndProject
 Global
