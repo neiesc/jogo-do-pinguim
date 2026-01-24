@@ -1,5 +1,4 @@
-# yaml
-name: Build Godot 4 C# Project for Web
+name: Build Godot C# Project for Web
 
 on:
   push:
@@ -12,68 +11,74 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  GODOT_VERSION: '4.2.4-stable'    # ajustar para a versão 4.x desejada
+  GODOT_VERSION: '4.3'
   EXPORT_NAME: MeuJogo
   PROJECT_PATH: '.'
 
 jobs:
   export_game:
     runs-on: ubuntu-latest
-    name: Export Game (Godot 4)
+    name: Export Game
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Atualizar versão da config para Godot 4
-        run: sed -i 's/config_version=.*/config_version=5/' project.godot
 
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install Godot Mono (headless)
+      # CORREÇÃO AQUI: Uso de wildcards para garantir que encontramos os arquivos
+      - name: Install Godot Mono
         run: |
           echo "Baixando Godot ${{ env.GODOT_VERSION }} Mono..."
-          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
+          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64.zip
+          
           echo "Extraindo..."
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_mono_linux_headless_64.zip
-          echo "Movendo binário para godot_bin_dir..."
-          mkdir -p godot_bin_dir
-          # Encontra o binário extraído e move para a pasta
-          GODOT_BINARY=$(find . -maxdepth 2 -type f -name "Godot_v*mono_linux_headless_64" -print -quit)
-          if [ -z "$GODOT_BINARY" ]; then
-            # tenta padrão alternativo sem 'mono' caso o nome seja diferente
-            GODOT_BINARY=$(find . -maxdepth 2 -type f -name "Godot_v*linux_headless_64" -print -quit)
-          fi
-          mv "$GODOT_BINARY" godot_bin_dir/godot
-          chmod +x godot_bin_dir/godot
+          unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_linux_x86_64.zip
+          
+          echo "Renomeando pasta extraída..."
+          # Move a pasta extraída (qualquer que seja o nome dela) para 'godot_bin_dir'
+          mv Godot_v*mono_linux_x86_64 godot_bin_dir
+          
+          echo "Configurando permissões..."
+          # Dá permissão de execução para o binário dentro da pasta (qualquer arquivo começando com Godot_v)
+          chmod +x godot_bin_dir/Godot_v*
+          
+          echo "Criando link simbólico..."
+          # Cria um link chamado 'godot' apontando para o binário real
+          # O comando find garante que pegamos apenas o arquivo, não a pasta GodotSharp
+          GODOT_BINARY=$(find godot_bin_dir -maxdepth 1 -type f -name "Godot_v*")
+          ln -s $GITHUB_WORKSPACE/$GODOT_BINARY $GITHUB_WORKSPACE/godot_bin_dir/godot
+          
+          echo "Adicionando ao PATH..."
           echo "$GITHUB_WORKSPACE/godot_bin_dir" >> $GITHUB_PATH
 
       - name: Verify Godot Installation
-        run: godot --version
-
-      - name: Install Export Templates (Godot 4 Mono)
         run: |
-          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.mono
-          unzip -q Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz -d templates_tmp
-          mv templates_tmp/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.mono/
-          rm -rf templates_tmp Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz
+          godot --version
+
+      - name: Install Export Templates
+        run: |
+          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono
+          unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono/
+          rm -f Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
 
       - name: Dotnet Restore
         run: dotnet restore ${{ env.PROJECT_PATH }}
 
       - name: Create Build Directories
-        run: mkdir -p build/web
-
-      - name: Export to Web (HTML5)
         run: |
-          # Use o nome do preset de export presente no editor (ex: "HTML5")
-          godot --headless --path "${{ env.PROJECT_PATH }}" --export "HTML5" "build/web/index.html"
+          mkdir -p build/web
 
-      - name: Upload Web Build
+      - name: Export Web
+        run: |
+          godot --headless --verbose --path ${{ env.PROJECT_PATH }} --export-release "HTML5" ./build/windows/${{ env.EXPORT_NAME }}.exe
+
+      - name: Upload Windows Build
         uses: actions/upload-artifact@v4
         with:
-          name: web-build
+          name: windows-build
           path: build/web
