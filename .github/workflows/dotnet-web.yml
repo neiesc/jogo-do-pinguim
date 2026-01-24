@@ -55,11 +55,11 @@ jobs:
 
       - name: Install Export Templates
         run: |
-          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
-          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono
-          unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
-          mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono/
-          rm -f Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz
+          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.mono
+          unzip -q Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.mono/
+          rm -f Godot_v${{ env.GODOT_VERSION }}_mono_export_templates.tpz
 
       - name: Dotnet Restore
         run: dotnet restore ${{ env.PROJECT_PATH }}
