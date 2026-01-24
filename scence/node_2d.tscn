@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://bqjjo26hlxuey"]
 
-[ext_resource type="Script" path="res://scence/CharacterBody2d.cs" id="1_hs4ht"]
+[ext_resource type="Script" uid="uid://dor3vqiiuj103" path="res://scence/CharacterBody2d.cs" id="1_hs4ht"]
 [ext_resource type="Texture2D" uid="uid://xrvmw12f2ge5" path="res://sprite/1 - Penguin/Idle (16 x 16).png" id="2_01sjf"]
 [ext_resource type="Texture2D" uid="uid://2xxvpcqtky50" path="res://sprite/1 - Penguin/Jump (16 x 16).png" id="3_3x84b"]
 [ext_resource type="Texture2D" uid="uid://1igcsfnn533d" path="res://sprite/1 - Penguin/Waddling (16 x 16).png" id="4_k74bo"]
@@ -110,7 +110,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bhann"]
-size = Vector2(741.5, 107)
+size = Vector2(229.625, 32.5)
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(125, 35)
@@ -131,5 +131,5 @@ autoplay = "idle"
 position = Vector2(-62, 613)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(-157.75, -529)
+position = Vector2(54, -571)
 shape = SubResource("RectangleShape2D_bhann")
