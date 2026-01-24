@@ -2,13 +2,11 @@ name: Build Godot C# Project
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, master ]
   pull_request:
 
 env:
-  # Defina a versão exata do Godot que você usa
-  GODOT_VERSION: 4.3
-  # Nome do projeto para o arquivo final
+  GODOT_VERSION: '4.3'
   EXPORT_NAME: MeuJogo
 
 jobs:
@@ -16,55 +14,58 @@ jobs:
     runs-on: ubuntu-latest
     name: Export Game
     steps:
-      # 1. Baixa o código do repositório
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. Configura o .NET SDK (Necessário para Godot C#)
-      # Godot 4.x geralmente usa .NET 6, 7 ou 8. Verifique seu .csproj.
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
+          dotnet-version: '8.0.x' # Godot 4.3 usa .NET 8 (ou 6/7 dependendo do seu csproj)
 
-      # 3. Instala o Godot versão .NET e os Templates de Exportação
+      # Usando isowa/setup-godot que é mais compatível com versões novas
       - name: Setup Godot
-        uses: chickensoft-games/setup-godot@v2
+        uses: isowa/setup-godot@v2
         with:
-          version: ${{ env.GODOT_VERSION }}
-          use-dotnet: true # IMPORTANTE: Isso baixa a versão Mono/NET
-          include-templates: true
+          godot-version: ${{ env.GODOT_VERSION }}
+          godot-mono: true
 
-      # 4. Restaura as dependências do C# (NuGet)
+      # Instalação manual dos templates (mais robusto que depender de actions)
+      - name: Install Export Templates
+        run: |
+          # Define o caminho correto para o Linux
+          mkdir -p ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono
+          
+          # Baixa o arquivo TPZ oficial
+          wget -q https://github.com/godotengine/godot/releases/download/${{ env.GODOT_VERSION }}-stable/Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          
+          # Extrai (o TPZ é apenas um ZIP renomeado)
+          unzip -q Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          
+          # Move o conteúdo para a pasta que o Godot espera
+          mv templates/* ~/.local/share/godot/export_templates/${{ env.GODOT_VERSION }}.stable.mono/
+          
+          # Limpeza
+          rm -f Godot_v${{ env.GODOT_VERSION }}-stable_mono_export_templates.tpz
+          rm -rf templates
+
       - name: Dotnet Restore
         run: dotnet restore
 
-      # 5. Cria as pastas de saída (Opcional, mas recomendado para organização)
       - name: Create Build Directories
         run: |
           mkdir -p build/windows
           mkdir -p build/linux
 
-      # 6. Exporta para Windows
-      # O nome "Windows Desktop" deve ser igual ao nome do Preset no Godot
       - name: Export Windows
         run: |
           godot --headless --verbose --export-release "Windows Desktop" ./build/windows/${{ env.EXPORT_NAME }}.exe
 
-      # 7. Exporta para Linux (Opcional)
       - name: Export Linux
         run: |
           godot --headless --verbose --export-release "Linux/X11" ./build/linux/${{ env.EXPORT_NAME }}.x86_64
 
-      # 8. Faz o Upload dos artefatos para o GitHub (para você baixar depois)
       - name: Upload Windows Build
         uses: actions/upload-artifact@v4
         with:
           name: windows-build
           path: build/windows
-
-      - name: Upload Linux Build
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-build
-          path: build/linux
