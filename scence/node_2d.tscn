@@ -115,7 +115,7 @@ size = Vector2(229.625, 32.5)
 [node name="Node2D" type="Node2D"]
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-position = Vector2(-99, -2)
+position = Vector2(17, 23)
 script = ExtResource("1_hs4ht")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
@@ -130,5 +130,5 @@ autoplay = "idle"
 position = Vector2(-62, 613)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(54, -571)
+position = Vector2(160, -523)
 shape = SubResource("RectangleShape2D_bhann")
