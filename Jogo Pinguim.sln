@@ -1,15 +1,6 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jogo Pinguim", "Jogo Pinguim.csproj", "{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{8E8DC7FB-9A06-4886-88A5-EE0EC7C15E9E}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
-		.gitignore = .gitignore
-		.gitattributes = .gitattributes
-		.github\workflows\static.yml = .github\workflows\static.yml
-		.github\workflows\dotnet-web.yml = .github\workflows\dotnet-web.yml
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jogo Pinguim", "Jogo Pinguim.csproj", "{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,11 +9,11 @@ Global
 	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
-		{2A5F7188-0A5F-4F5A-8ECE-5A43FD5A8CE7}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{48ADA83A-D18D-4EF6-A26A-17AC76C6887E}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal
