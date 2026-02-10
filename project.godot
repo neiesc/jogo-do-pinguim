@@ -28,7 +28,7 @@ window/stretch/mode="viewport"
 
 [dotnet]
 
-project/assembly_name="Jogo Pinguim"
+project/assembly_name="Jogo do Pinguim"
 
 [editor]
 
