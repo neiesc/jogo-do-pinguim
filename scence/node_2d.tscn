@@ -3,7 +3,13 @@
 [ext_resource type="PackedScene" uid="uid://cbqr66g4nx5qe" path="res://entities/player.tscn" id="1_gikdm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bhann"]
-size = Vector2(229.625, 32.5)
+size = Vector2(229.8125, 33.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gikdm"]
+size = Vector2(85.8125, 24.25)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bg5qw"]
+size = Vector2(164.90625, 24.25)
 
 [node name="Node2D" type="Node2D" unique_id=381652774]
 
@@ -13,5 +19,13 @@ size = Vector2(229.625, 32.5)
 position = Vector2(-62, 613)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D" unique_id=1340734405]
-position = Vector2(160, -523)
+position = Vector2(98, -414)
 shape = SubResource("RectangleShape2D_bhann")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D" unique_id=1028786362]
+position = Vector2(266.09375, -429.125)
+shape = SubResource("RectangleShape2D_gikdm")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="StaticBody2D" unique_id=51658740]
+position = Vector2(406, -442)
+shape = SubResource("RectangleShape2D_bg5qw")
