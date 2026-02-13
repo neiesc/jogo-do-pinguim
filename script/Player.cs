@@ -40,21 +40,28 @@ public partial class Player : CharacterBody2D
 		{
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 		}
-		
-		if (direction.X > 0)
-		{
-			_animatedSprite2D.Play("walk");
-			_animatedSprite2D.SetFlipH(false);
-		}
-		else if (direction.X < 0)
-		{
-			_animatedSprite2D.Play("walk");
-			_animatedSprite2D.SetFlipH(true);
-		}
-		else {
-			_animatedSprite2D.Play("idle");
-		}
 
+		if (IsOnFloor())
+		{
+			if (direction.X > 0)
+			{
+				_animatedSprite2D.Play("walk");
+				_animatedSprite2D.SetFlipH(false);
+			}
+			else if (direction.X < 0)
+			{
+				_animatedSprite2D.Play("walk");
+				_animatedSprite2D.SetFlipH(true);
+			}
+			else {
+				_animatedSprite2D.Play("idle");
+			}	
+		}
+		else
+		{
+			_animatedSprite2D.Play("jump");
+		}
+		
 		Velocity = velocity;
 		MoveAndSlide();
 	}
