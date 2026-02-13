@@ -3,8 +3,8 @@ using System;
 
 public partial class Player : CharacterBody2D
 {
-	public const float Speed = 300.0f;
-	public const float JumpVelocity = -400.0f;
+	public const float Speed = 50.0f;
+	public const float JumpVelocity = -200.0f;
 	
 	private AnimatedSprite2D _animatedSprite2D;
 
@@ -41,13 +41,15 @@ public partial class Player : CharacterBody2D
 			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
 		}
 		
-		if (direction > Vector2.Right)
+		if (direction.X > 0)
 		{
 			_animatedSprite2D.Play("walk");
+			_animatedSprite2D.SetFlipH(false);
 		}
-		else if (direction < Vector2.Left)
+		else if (direction.X < 0)
 		{
 			_animatedSprite2D.Play("walk");
+			_animatedSprite2D.SetFlipH(true);
 		}
 		else {
 			_animatedSprite2D.Play("idle");
